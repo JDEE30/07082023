@@ -9,8 +9,8 @@
       alt="..."
     />
     <div class="carousel-caption d-none d-md-block">
-      <h5>Simple DATA</h5>
-      <p>This angular aplication is a simple data aggregator</p>
+      <h5>Simple jobs</h5>
+      <p>Search for remote jobs</p>
     </div>
   </mdb-carousel-item>
   <mdb-carousel-item>
@@ -20,7 +20,7 @@
       alt="..."
     />
     <div class="carousel-caption d-none d-md-block">
-      <h5>easy to use</h5>
+      <h5>Easy to use</h5>
       <p>Scroll down and search for what you need</p>
     </div>
   </mdb-carousel-item>
@@ -31,8 +31,8 @@
       alt="..."
     />
     <div class="carousel-caption d-none d-md-block">
-      <h5>Never wonder again</h5>
-      <p>All the data you need now!</p>
+      <h5>Never worry about layoffs</h5>
+      <p>Apply for your next role today!</p>
     </div>
   </mdb-carousel-item>
 </mdb-carousel>
@@ -57,7 +57,7 @@
           </h6>
           <p>
 
-            Start Searching
+            Start searching
           </p>
         </div>
         <!-- Grid column -->
@@ -82,7 +82,7 @@
             Step 3.
           </h6>
           <p>
-          Print Data
+          Apply
           </p>
         </div>
         <!-- Grid column -->
@@ -95,40 +95,36 @@
 
  <!--******************************* Form Start **************************** -->
 
-<div>
-  <form [formGroup]="validationForm">
-    <div class="row">
-      <div class="col-md-12">
-        <mdb-form-control>
-          <input
-            mdbValidate
-            mdbInput
-            type="text"
-            id="form1"
-            class="form-control"
-            formControlName="firstName"
-            required
-          />
-          <label mdbLabel class="form-label" for="form1">Start Searching</label>
-          <mdb-error
-            *ngIf="
-            firstName?.invalid && (firstName?.dirty || firstName?.touched)
-            "
-            >input is required</mdb-error
-          >
-          <mdb-success
-            *ngIf="
-            firstName?.valid && (firstName?.dirty || firstName?.touched)
-            "
-            >Looks good!</mdb-success
-          >
-        </mdb-form-control>
-      </div>
-    
-    </div>
-  </form>
 
+
+
+
+ <div class="container">
+  <mdb-form-control>
+
+  <input type="search" [(ngModel)]="searchTerm" id="form1"  placeholder="Search for remote jobs"  class="form-control">
+  <label mdbLabel class="form-label" for="form1">Search</label>
+</mdb-form-control>
+<button type="button" (click)="search()" class="btn btn-primary"> <i class="fas fa-search"></i> Search</button>
+  
+<button type="button" class="btn btn-secondary" mdbRipple (click)="clearResults()">Clear Results</button>
+  
+  <div *ngIf="jobs">
+    <div *ngFor="let job of jobs">
+      <img class="job-company-logo" *ngIf="job.company_logo" [src]="job.company_logo" alt="Company Logo">
+
+      <h3 class="job-title">{{ job.title }}</h3>
+      <p class="job-salary">Salary: {{ job.salary }}</p>
+      <p class="company-name">{{ job.company_name }}</p>
+      <p class="job-url">URL:<a [href]="job.url" target="_blank"> {{ job.url }}</a></p>
+
+      <p class="job-description" [innerHTML]="job.descriptionWithBreaks"></p>
+      
+      <hr>
+    </div>
+  </div>
 </div>
+
 
  <!--******************************* Footer Start **************************** -->
 <div>  

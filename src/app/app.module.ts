@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 
 // MDB Modules
@@ -24,12 +24,12 @@ import { MdbErrorDirective } from 'mdb-angular-ui-kit/validation';
 import { MdbSuccessDirective } from 'mdb-angular-ui-kit/validation';
 
 
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -51,6 +51,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MdbValidationModule,
     FormsModule,
     ReactiveFormsModule,  
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

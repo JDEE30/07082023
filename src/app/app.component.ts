@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-
+import { HttpClient } from '@angular/common/http';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -9,23 +9,49 @@ import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validator
 })
 export class AppComponent {
   title = 'mdb-angular-ui-kit-free';
-  validationForm: FormGroup;
+  searchTerm: string;
+  jobs: any[];
 
-  constructor() {
-    this.validationForm = new FormGroup({
-      firstName: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
-      lastName: new FormControl(null, { validators: Validators.required, updateOn: 'blur' }),
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) { }
+
+  search() {
+    const apiUrl = 'https://remotive.io/api/remote-jobs?limit=10&search=' + this.searchTerm;
+
+    this.http.get(apiUrl).subscribe((response: any) => {
+      this.jobs = response.jobs.map((job: any) => {
+        const plainDescription = this.stripHtmlTags(job.description);
+        const descriptionWithBreaks = this.addBreaks(plainDescription);
+        return { ...job, descriptionWithBreaks };
+      });
     });
   }
 
-  get firstName(): AbstractControl {
-    return this.validationForm.get('firstName')!;
+
+  clearResults() {
+    this.searchTerm = '';
+    this.jobs = [];
+
+  }
+  
+  private stripHtmlTags(html: string): string {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
   }
 
-  get lastName(): AbstractControl {
-    return this.validationForm.get('lastName')!;
+  private addBreaks(text: string): string {
+    const sentences = text.split('. ');
+    const sentencesWithBreaks = [];
+
+    for (let i = 0; i < sentences.length; i++) {
+      sentencesWithBreaks.push(sentences[i]);
+      if ((i + 1) % 3 === 0 && i !== sentences.length - 1) {
+        sentencesWithBreaks.push('<br><br>');
+      }
+    }
+
+    return sentencesWithBreaks.join('. ');
   }
 }
-
 
 
